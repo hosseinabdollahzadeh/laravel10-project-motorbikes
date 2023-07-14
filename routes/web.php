@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MotorController;
 use App\Http\Controllers\Home\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin', [AdminController::class, 'index']);
+Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function (){
+    Route::resource('motors', MotorController::class);
+
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+});
 
 Auth::routes();
 
