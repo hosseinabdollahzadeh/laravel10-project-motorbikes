@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MotorController;
+use App\Http\Controllers\Home\MotorController as HomeMotorController;
 use App\Http\Controllers\Home\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,8 @@ Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function ()
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('/')->name('home.')->middleware(['auth'])->group(function (){
+Route::get('', [HomeController::class, 'index'])->name('index');
+Route::get('motors', [HomeMotorController::class, 'index'])->name('motors');
+Route::get('motors/{motor:id}', [HomeMotorController::class, 'show'])->name('motors.show');
+});
